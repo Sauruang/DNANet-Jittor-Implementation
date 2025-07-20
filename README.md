@@ -124,7 +124,7 @@ python train.py --dataset NUAA-SIRST
 - `--channel_size`: 通道配置 (one, two, three, four)
 - `--deep_supervision`: 是否使用深度监督 (True/False)
 - `--optimizer`: 优化器 (Adam, Adagrad)
-- `--scheduler`: 学习率调度器 (CosineAnnealingLR, ReduceLROnPlateau)
+- `--scheduler`: 学习率调度器 (CosineAnnealingLR)
 
 **自定义训练示例：**
 ```bash
