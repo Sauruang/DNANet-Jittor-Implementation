@@ -1,31 +1,6 @@
 import jittor as jt
 import jittor.nn as nn
 
-
-class VGG_CBAM_Block(nn.Module):
-    """VGG风格的CBAM注意力块"""
-    def __init__(self, in_channels, out_channels):
-        super().__init__()
-        self.conv1 = nn.Conv2d(in_channels, out_channels, 3, padding=1)
-        self.bn1 = nn.BatchNorm2d(out_channels)
-        self.relu = nn.ReLU()
-        self.conv2 = nn.Conv2d(out_channels, out_channels, 3, padding=1)
-        self.bn2 = nn.BatchNorm2d(out_channels)
-        self.relu2 = nn.ReLU()  # 创建独立的ReLU实例
-        self.ca = ChannelAttention(out_channels)
-        self.sa = SpatialAttention()
-
-    def execute(self, x):
-        out = self.conv1(x)
-        out = self.bn1(out)
-        out = self.relu(out)
-        out = self.conv2(out)
-        out = self.bn2(out)
-        out = self.ca(out) * out
-        out = self.sa(out) * out
-        out = self.relu2(out)  # 使用独立的ReLU实例
-        return out
-
 class ChannelAttention(nn.Module):
     """通道注意力模块"""
     def __init__(self, in_planes, ratio=16):
