@@ -5,8 +5,9 @@
 ## 1. 环境要求
 
 ### 基础环境
-- Python 3.7+
-- CUDA 10.0+ (支持GPU训练)
+- Python  3.8(ubuntu18.04)
+- CUDA  11.3
+
 
 ### 依赖包
 ```bash
