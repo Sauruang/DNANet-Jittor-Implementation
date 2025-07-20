@@ -15,6 +15,7 @@ def parse_args():
     parser.add_argument('--deep_supervision', type=str, default='True', help='是否使用深度监督 (True, False)')
 
     # 数据集和预处理
+    parser.add_argument('--mode', type=str, default='TXT', help='数据集加载模式')
     parser.add_argument('--dataset', type=str, default='NUDT-SIRST',
                         help='数据集名称 (NUDT-SIRST, NUAA-SIRST, NUST-SIRST)')
     parser.add_argument('--st_model', type=str, default='NUDT-SIRST_DNANet_31_07_2021_14_50_57_wDS',
