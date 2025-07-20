@@ -1,0 +1,29 @@
+﻿# Python缓存文件
+__pycache__/
+*.py[cod]
+*.class
+*.so
+
+# Jupyter Notebook检查点
+.ipynb_checkpoints/
+
+# 训练结果（过大的文件，只保留BEST结果）
+result/*/
+!result/NUAA_BEST/
+!result/NUDT_BEST/
+
+# 临时文件
+temp_*/
+*.tmp
+
+# 数据集文件（过大，用户需要自己下载）
+*.zip
+dataset/*/images/
+dataset/*/masks/
+
+# 模型文件（过大）
+*.pth.tar
+
+# 系统文件
+.DS_Store
+Thumbs.db
