@@ -10,16 +10,9 @@ import zipfile
 import shutil
 from pathlib import Path
 
-def print_banner():
-    """打印欢迎横幅"""
-    print("=" * 60)
-    print("    DNANet Jittor Implementation - 数据集准备工具")
-    print("=" * 60)
-    print()
-
 def check_dataset_files():
     """检查数据集文件是否存在"""
-    print("🔍 检查数据集文件...")
+    print("检查数据集文件...")
     
     expected_files = [
         "NUAA-SIRST.zip",
@@ -32,21 +25,21 @@ def check_dataset_files():
     for file_name in expected_files:
         if os.path.exists(file_name):
             existing_files.append(file_name)
-            print(f"  ✅ 找到: {file_name}")
+            print(f"   找到: {file_name}")
         else:
             missing_files.append(file_name)
-            print(f"  ❌ 缺失: {file_name}")
+            print(f"   缺失: {file_name}")
     
     return existing_files, missing_files
 
 def create_dataset_structure():
     """创建数据集目录结构"""
-    print("\n📁 创建数据集目录结构...")
+    print("\n 创建数据集目录结构...")
     
     # 创建主数据集目录
     dataset_dir = Path("dataset")
     dataset_dir.mkdir(exist_ok=True)
-    print(f"  ✅ 创建目录: {dataset_dir}")
+    print(f"   创建目录: {dataset_dir}")
     
     # 创建各数据集子目录
     datasets = ["NUAA-SIRST", "NUDT-SIRST"]
@@ -60,7 +53,7 @@ def create_dataset_structure():
         for subdir in subdirs:
             (dataset_path / subdir).mkdir(exist_ok=True)
         
-        print(f"  ✅ 创建数据集目录: {dataset_path}")
+        print(f"   创建数据集目录: {dataset_path}")
 
 def extract_dataset(zip_file, dataset_name):
     """解压数据集文件"""
@@ -71,7 +64,7 @@ def extract_dataset(zip_file, dataset_name):
             # 解压到临时目录
             temp_dir = f"temp_{dataset_name}"
             zip_ref.extractall(temp_dir)
-            print(f"  ✅ 解压完成: {zip_file}")
+            print(f"   解压完成: {zip_file}")
             
             # 查找解压后的实际目录结构
             temp_path = Path(temp_dir)
@@ -87,10 +80,10 @@ def extract_dataset(zip_file, dataset_name):
             return source_dir, temp_dir
             
     except zipfile.BadZipFile:
-        print(f"  ❌ 错误: {zip_file} 不是有效的ZIP文件")
+        print(f"   错误: {zip_file} 不是有效的ZIP文件")
         return None, None
     except Exception as e:
-        print(f"  ❌ 解压失败: {e}")
+        print(f"   解压失败: {e}")
         return None, None
 
 def organize_dataset_files(source_dir, dataset_name):
@@ -121,9 +114,9 @@ def organize_dataset_files(source_dir, dataset_name):
         if target_images.exists():
             shutil.rmtree(target_images)
         shutil.copytree(images_source, target_images)
-        print(f"  ✅ 复制images目录: {len(list(target_images.glob('*')))} 个文件")
+        print(f"   复制images目录: {len(list(target_images.glob('*')))} 个文件")
     else:
-        print(f"  ❌ 未找到images目录")
+        print(f"   未找到images目录")
     
     # 复制masks目录  
     if masks_source and masks_source.exists():
@@ -131,9 +124,9 @@ def organize_dataset_files(source_dir, dataset_name):
         if target_masks.exists():
             shutil.rmtree(target_masks)
         shutil.copytree(masks_source, target_masks)
-        print(f"  ✅ 复制masks目录: {len(list(target_masks.glob('*')))} 个文件")
+        print(f"   复制masks目录: {len(list(target_masks.glob('*')))} 个文件")
     else:
-        print(f"  ❌ 未找到masks目录")
+        print(f"   未找到masks目录")
     
     # 复制数据集划分文件
     if split_source and split_source.exists():
@@ -141,7 +134,7 @@ def organize_dataset_files(source_dir, dataset_name):
         if target_split.exists():
             shutil.rmtree(target_split)
         shutil.copytree(split_source, target_split)
-        print(f"  ✅ 复制数据集划分文件")
+        print(f"   复制数据集划分文件")
     else:
         # 查找train.txt和test.txt文件
         train_txt = None
@@ -157,9 +150,9 @@ def organize_dataset_files(source_dir, dataset_name):
             target_split.mkdir(exist_ok=True)
             shutil.copy2(train_txt, target_split / "train.txt")
             shutil.copy2(test_txt, target_split / "test.txt")
-            print(f"  ✅ 复制数据集划分文件")
+            print(f"   复制数据集划分文件")
         else:
-            print(f"  ⚠️  未找到数据集划分文件 (train.txt, test.txt)")
+            print(f"    未找到数据集划分文件 (train.txt, test.txt)")
 
 def cleanup_temp_files(temp_dirs):
     """清理临时文件"""
@@ -167,11 +160,11 @@ def cleanup_temp_files(temp_dirs):
     for temp_dir in temp_dirs:
         if os.path.exists(temp_dir):
             shutil.rmtree(temp_dir)
-            print(f"  ✅ 删除临时目录: {temp_dir}")
+            print(f"   删除临时目录: {temp_dir}")
 
 def verify_dataset_structure():
     """验证数据集结构是否正确"""
-    print("\n✅ 验证数据集结构...")
+    print("\n 验证数据集结构...")
     
     datasets = ["NUAA-SIRST", "NUDT-SIRST"]
     all_good = True
@@ -187,22 +180,22 @@ def verify_dataset_structure():
             if dir_path.exists():
                 if dirname == "images":
                     file_count = len(list(dir_path.glob("*.png")))
-                    print(f"    ✅ {dirname}/ ({file_count} 张图像)")
+                    print(f"     {dirname}/ ({file_count} 张图像)")
                 elif dirname == "masks":
                     file_count = len(list(dir_path.glob("*.png")))
-                    print(f"    ✅ {dirname}/ ({file_count} 个标签)")
+                    print(f"     {dirname}/ ({file_count} 个标签)")
                 elif dirname == "50_50":
                     train_txt = dir_path / "train.txt"
                     test_txt = dir_path / "test.txt"
                     if train_txt.exists() and test_txt.exists():
-                        print(f"    ✅ {dirname}/ (train.txt, test.txt)")
+                        print(f"     {dirname}/ (train.txt, test.txt)")
                     else:
-                        print(f"    ❌ {dirname}/ (缺少train.txt或test.txt)")
+                        print(f"     {dirname}/ (缺少train.txt或test.txt)")
                         all_good = False
                 else:
-                    print(f"    ✅ {dirname}/")
+                    print(f"     {dirname}/")
             else:
-                print(f"    ❌ {dirname}/ (目录不存在)")
+                print(f"     {dirname}/ (目录不存在)")
                 all_good = False
     
     return all_good
@@ -212,22 +205,18 @@ def print_download_instructions():
     print("\n📥 数据集下载说明:")
     print("=" * 50)
     print("请手动下载以下数据集并保存到项目根目录:")
-    print()
     print("📁 NUDT-SIRST数据集:")
     print("  链接: https://pan.quark.cn/s/c87c1148de39?pwd=AQtj")
     print("  提取码: AQtj")
-    print("  保存为: NUDT-SIRST.zip")
     print()
     print("📁 NUAA-SIRST数据集:")
     print("  链接: https://pan.quark.cn/s/55066db3363d?pwd=DVb1")  
     print("  提取码: DVb1")
-    print("  保存为: NUAA-SIRST.zip")
     print()
     print("下载完成后，重新运行此脚本进行自动解压和整理。")
 
 def main():
     """主函数"""
-    print_banner()
     
     # 检查数据集文件
     existing_files, missing_files = check_dataset_files()
@@ -262,15 +251,10 @@ def main():
     success = verify_dataset_structure()
     
     # 最终提示
-    print("\n" + "=" * 60)
     if success:
-        print("🎉 数据集准备完成！您现在可以开始训练模型了。")
-        print("\n训练命令示例:")
-        print("  python train.py --dataset NUDT-SIRST")
-        print("  python train.py --dataset NUAA-SIRST")
+        print("数据集准备完成！")
     else:
-        print("⚠️  数据集准备过程中发现问题，请检查上述错误信息。")
-    print("=" * 60)
+        print("据集准备过程中发现问题，请检查上述错误信息。")
 
 if __name__ == "__main__":
     main() 
