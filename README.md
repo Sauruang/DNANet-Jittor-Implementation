@@ -157,7 +157,6 @@ python test.py --dataset NUDT-SIRST --st_model NUDT_BEST --model_dir NUDT_BEST/m
 - `--st_model`: 模型标识名称 (用于结果文件命名)
 - `--model_dir`: 预训练模型路径 (相对于result/目录)
 - `--test_batch_size`: 测试批次大小 (默认1)
-- `--ROC_thr`: ROC分析阈值数量 (默认10)
 
 **测试特定训练结果：**
 ```bash
