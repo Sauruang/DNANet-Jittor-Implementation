@@ -12,6 +12,7 @@ def parse_args():
     parser.add_argument('--deep_supervision', type=str, default='True', help='是否使用深度监督 (True, False)')
 
     # 数据集和预处理
+    parser.add_argument('--mode', type=str, default='TXT', help='数据集加载模式')
     parser.add_argument('--dataset', type=str, default='NUDT-SIRST',
                         help='数据集名称 (NUDT-SIRST, NUAA-SIRST, NUST-SIRST)')
     parser.add_argument('--root', type=str, default='dataset/')
@@ -44,7 +45,7 @@ def parse_args():
                         help='学习率 (默认: 0.001)')
     # CUDA和日志
     parser.add_argument('--gpus', type=str, default='0',
-                        help='使用的GPU')
+                        help='使用的GPU，例如指定 1,3')
 
     args = parser.parse_args()
 
