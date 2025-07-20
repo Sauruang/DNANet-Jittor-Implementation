@@ -230,3 +230,10 @@ result/
 - 深度监督：启用 (wDS)
 
 
+## 预训练模型下载
+
+我们提供了在两个数据集上训练的预训练模型：
+
+### 模型文件位置
+- **NUAA-SIRST模型**: `result/NUAA_BEST/mIoU_best.pth.tar` (18MB)
+- **NUDT-SIRST模型**: `result/NUDT_BEST/mIoU_best.pth.tar` (18MB)
