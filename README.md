@@ -12,16 +12,10 @@
 ```bash
 # 核心框架
 jittor==1.3.1
-
-# 科学计算包
 numpy
 scipy
 scikit-image
-
-# 图像处理
 Pillow
-
-# 工具包  
 tqdm
 ```
 
