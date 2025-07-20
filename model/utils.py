@@ -9,7 +9,7 @@ from datetime import datetime
 import argparse
 
 class TrainSetLoader(Dataset):
-    """Iceberg Segmentation dataset."""
+    """红外小目标分割训练数据集加载器"""
     NUM_CLASS = 1
 
     def __init__(self, dataset_dir, img_id ,base_size=512,crop_size=480,transform=None,suffix='.png'):
@@ -24,12 +24,12 @@ class TrainSetLoader(Dataset):
         self.suffix = suffix
 
     def _sync_transform(self, img, mask):
-        # random mirror
+        # 随机镜像翻转
         if random.random() < 0.5:
             img = img.transpose(Image.FLIP_LEFT_RIGHT)
             mask = mask.transpose(Image.FLIP_LEFT_RIGHT)
         crop_size = self.crop_size
-        # random scale (short edge)
+        # 随机缩放（短边）
         long_size = random.randint(int(self.base_size * 0.5), int(self.base_size * 2.0))
         w, h = img.size
         if h > w:
@@ -42,38 +42,38 @@ class TrainSetLoader(Dataset):
             short_size = oh
         img = img.resize((ow, oh), Image.BILINEAR)
         mask = mask.resize((ow, oh), Image.NEAREST)
-        # pad crop
+        # 填充裁剪
         if short_size < crop_size:
             padh = crop_size - oh if oh < crop_size else 0
             padw = crop_size - ow if ow < crop_size else 0
             img = ImageOps.expand(img, border=(0, 0, padw, padh), fill=0)
             mask = ImageOps.expand(mask, border=(0, 0, padw, padh), fill=0)
-        # random crop crop_size
+        # 随机裁剪到指定大小
         w, h = img.size
         x1 = random.randint(0, w - crop_size)
         y1 = random.randint(0, h - crop_size)
         img = img.crop((x1, y1, x1 + crop_size, y1 + crop_size))
         mask = mask.crop((x1, y1, x1 + crop_size, y1 + crop_size))
-        # gaussian blur as in PSP
+        # 高斯模糊（如PSP中使用）
         if random.random() < 0.5:
             img = img.filter(ImageFilter.GaussianBlur(
                 radius=random.random()))
-        # final transform
+        # 最终变换
         img, mask = np.array(img), np.array(mask, dtype=np.float32)
         return img, mask
 
     def __getitem__(self, idx):
-        img_id     = self._items[idx]                        # idx：('../SIRST', 'Misc_70') 成对出现，因为我的workers设置为了2
+        img_id     = self._items[idx]             
         img_path   = os.path.join(self.images, img_id + self.suffix)
         label_path = os.path.join(self.masks, img_id + self.suffix)
 
-        img = Image.open(img_path).convert('RGB')         ##由于输入的三通道、单通道图像都有，所以统一转成RGB的三通道，这也符合Unet等网络的期待尺寸
+        img = Image.open(img_path).convert('RGB')        
         mask = Image.open(label_path)
 
-        # synchronized transform
+        # 同步变换
         img, mask = self._sync_transform(img, mask)
 
-        # general resize, normalize and toTensor
+        # 通用调整大小、归一化和转换为张量
         if self.transform is not None:
             img = self.transform(img)
         mask = np.expand_dims(mask, axis=0).astype('float32')/ 255.0
@@ -85,7 +85,7 @@ class TrainSetLoader(Dataset):
 
 
 class TestSetLoader(Dataset):
-    """Iceberg Segmentation dataset."""
+    """红外小目标分割测试数据集加载器"""
     NUM_CLASS = 1
 
     def __init__(self, dataset_dir, img_id,transform=None,base_size=512,crop_size=480,suffix='.png'):
@@ -103,21 +103,21 @@ class TestSetLoader(Dataset):
         img  = img.resize ((base_size, base_size), Image.BILINEAR)
         mask = mask.resize((base_size, base_size), Image.NEAREST)
 
-        # final transform
-        img, mask = np.array(img), np.array(mask, dtype=np.float32)  # img: <class 'mxnet.ndarray.ndarray.NDArray'> (512, 512, 3)
+        # 最终变换
+        img, mask = np.array(img), np.array(mask, dtype=np.float32) 
         return img, mask
 
     def __getitem__(self, idx):
         # print('idx:',idx)
-        img_id = self._items[idx]  # idx：('../SIRST', 'Misc_70') 成对出现，因为我的workers设置为了2
+        img_id = self._items[idx]  
         img_path   = os.path.join(self.images, img_id + self.suffix)
         label_path = os.path.join(self.masks, img_id + self.suffix)
-        img  = Image.open(img_path).convert('RGB')  ##由于输入的三通道、单通道图像都有，所以统一转成RGB的三通道，这也符合Unet等网络的期待尺寸
+        img  = Image.open(img_path).convert('RGB') 
         mask = Image.open(label_path)
-        # synchronized transform
+        # 同步变换
         img, mask = self._testval_sync_transform(img, mask)
 
-        # general resize, normalize and toTensor
+        # 通用调整大小、归一化和转换为张量
         if self.transform is not None:
             img = self.transform(img)
         mask = np.expand_dims(mask, axis=0).astype('float32') / 255.0
@@ -129,35 +129,39 @@ class TestSetLoader(Dataset):
 
 
 def weights_init_xavier(m):
+    """Xavier权重初始化函数"""
     classname = m.__class__.__name__
     if classname.find('Conv2d') != -1:
         jt.init.xavier_normal_(m.weight)
 
 
 class AverageMeter(object):
-    """Computes and stores the average and current value"""
+    """计算并存储平均值和当前值的工具类"""
 
     def __init__(self):
         self.reset()
 
     def reset(self):
+        """重置所有统计值"""
         self.val = 0
         self.avg = 0
         self.sum = 0
         self.count = 0
 
     def update(self, val, n=1):
+        """更新统计值"""
         self.val = val
         self.sum += val * n
         self.count += n
         self.avg = self.sum / self.count
 
 def save_checkpoint(net, filepath):
-    """Saves the model checkpoint."""
+    """保存模型检查点"""
     jt.save(net, filepath)
 
 
 def weights_init_kaiming(m):
+    """Kaiming权重初始化函数"""
     classname = m.__class__.__name__
     if classname.find('Conv') != -1:
         jt.init.kaiming_normal_(m.weight, a=0, mode='fan_in')
