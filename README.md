@@ -241,4 +241,4 @@ result/
 
 感谢 Boyang Li, Chao Xiao, Longguang Wang, Yingqian Wang 等作者的DNANet论文：*Dense nested attention network for infrared small target detection* (IEEE TIP 2023)。
 
-感谢 [Jittor](https://github.com/Jittor/jittor) 框架提供的深度学习支持。
+感谢国产深度学习框架 [Jittor](https://github.com/Jittor/jittor) 提供的技术支持。
