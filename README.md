@@ -33,7 +33,7 @@ pip install numpy scipy scikit-image Pillow tqdm
 
 ### 自动化数据准备（推荐）
 
-我提供了自动化脚本来简化数据准备过程：
+提供了自动化脚本来简化数据准备过程：
 
 ```bash
 # 运行数据准备脚本
@@ -192,7 +192,7 @@ result/
 
 ### 4.2 训练损失曲线
 
-我在NUAA-SIRST和NUDT-SIRST两个数据集上的训练结果如下：
+在NUAA-SIRST和NUDT-SIRST两个数据集上的训练结果如下：
 
 #### NUAA-SIRST数据集训练损失
 
@@ -204,7 +204,7 @@ result/
 
 ### 4.3 性能对比分析
 
-我基于**ResNet-18**骨干网络的Jittor实现与原始PyTorch实现的性能对比如下：
+基于**ResNet-18**骨干网络的Jittor实现与原始PyTorch实现的性能对比如下：
 
 #### NUAA-SIRST数据集性能对比
 
@@ -229,7 +229,7 @@ result/
 
 ## 预训练模型下载
 
-我提供了在两个数据集上训练的预训练模型：
+提供了在两个数据集上训练的预训练模型：
 
 ### 模型文件位置
 - **NUAA-SIRST模型**: `result/NUAA_BEST/mIoU_best.pth.tar` (18MB)
