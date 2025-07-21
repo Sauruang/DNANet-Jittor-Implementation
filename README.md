@@ -234,3 +234,11 @@ result/
 ### 模型文件位置
 - **NUAA-SIRST模型**: `result/NUAA_BEST/mIoU_best.pth.tar` (18MB)
 - **NUDT-SIRST模型**: `result/NUDT_BEST/mIoU_best.pth.tar` (18MB)
+
+## 🙏 致谢
+
+本项目参考了 [@YeRen123455](https://github.com/YeRen123455) 的 [Infrared-Small-Target-Detection](https://github.com/YeRen123455/Infrared-Small-Target-Detection/tree/master) PyTorch实现。
+
+感谢 Boyang Li, Chao Xiao, Longguang Wang, Yingqian Wang 等作者的DNANet论文：*Dense nested attention network for infrared small target detection* (IEEE TIP 2023)。
+
+感谢 [Jittor](https://github.com/Jittor/jittor) 框架提供的深度学习支持。
