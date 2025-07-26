@@ -278,7 +278,7 @@ def main(args):
     for epoch in range(args.start_epoch, args.epochs):
         trainer.training(epoch)
         trainer.testing(epoch)
-
+        trainer.scheduler.step()
 
 if __name__ == "__main__":
     args = parse_args()
